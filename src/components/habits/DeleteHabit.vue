@@ -4,6 +4,7 @@
 
 <script setup>
 import { defineProps } from 'vue';
+import Swal from 'sweetalert2';
 import { useHabitStore } from '../../store/habitStore';
 
 // Define the habit prop for component
@@ -15,11 +16,21 @@ const habitStore = useHabitStore();
 
 // Delete the habit
 const deleteHabit = () => {
-  // eslint-disable-next-line no-restricted-globals
-  if (confirm('Are you sure you want to delete this habit?')) {
-    // Delete from store
-    habitStore.deleteHabit(props.habit);
-  }
+  Swal.fire({
+    title: 'Hold up...',
+    text: 'Are you sure you want to delete this habit?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#06652780',
+    cancelButtonColor: '#65060680',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, keep it',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Delete from store
+      habitStore.deleteHabit(props.habit);
+    }
+  });
 };
 </script>
 

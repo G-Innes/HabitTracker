@@ -30,6 +30,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import Swal from 'sweetalert2';
 import { useHabitStore } from '../../store/habitStore';
 import Categories from './Cats.vue';
 import Days from './Days.vue';
@@ -57,15 +58,19 @@ const selectedCategory = ref('');
 // Function to add a new habit to the store
 const addNewHabit = async () => {
   if (!habitName.value.trim()) {
-    alert('Please enter a habit name');
+    Swal.fire('Please enter a habit name!');
     return;
   }
   if (selectedDays.value.length === 0) {
-    alert('Please select at least one active day');
+    Swal.fire('Please select at least one active day');
     return;
   }
   if (selectedCategory.value.length === 0) {
-    alert('Please select at least one Category');
+    Swal.fire('Please select a category');
+    return;
+  }
+  if (habitName.value.length >= 30) {
+    Swal.fire('Keep habit name below 30 characters');
     return;
   }
 
@@ -88,9 +93,9 @@ const addNewHabit = async () => {
     selectedDays.value = [];
     selectedCategory.value = [];
 
-    alert('Habit added successfully');
+    Swal.fire('Habit added successfully');
   } catch (error) {
-    alert('Failed to save habit', error);
+    Swal.fire('Failed to save habit', error);
   }
 };
 
